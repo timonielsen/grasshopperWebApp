@@ -1,2 +1,5 @@
 Flask
 waitress
+bs4
+requests
+ghhops_server
