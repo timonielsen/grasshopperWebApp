@@ -3,6 +3,5 @@ waitress
 bs4
 requests
 ghhops_server
-io
 random
 matplotlib
