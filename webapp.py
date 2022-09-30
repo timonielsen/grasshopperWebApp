@@ -5,17 +5,26 @@ import requests
 from bs4 import BeautifulSoup
 
 app = Flask(__name__)
+hops: hs.HopsFlask = hs.Hops(app)
 
-@app.route('/')
-def homepage():
-    the_time = "Anne ist lieb"
+@hops.component(
+    "/binmult",
+    inputs=[hs.HopsNumber("A"), hs.HopsNumber("B")],
+    outputs=[hs.HopsNumber("Multiply")],
+)
+def BinaryMultiply(a: float, b: float):
+    return a * b
 
-    return """
-    <h1>Hello heroku</h1>
-    <p>It is currently {time}.</p>
+# @app.route('/')
+# def homepage():
+#     the_time = "Anne ist lieb"
 
-    <img src="http://loremflickr.com/600/600" />
-    """.format(time=the_time)
+#     return 
+
+#     <h1>Hello heroku</h1>
+#     <p>It is currently {time}.</p>
+
+#     <img src="http://loremflickr.com/600/600" />
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
