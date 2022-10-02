@@ -12,6 +12,8 @@ from flask import Response
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
+import time
+import base64
 
 app = Flask(__name__)
 hops: hs.HopsFlask = hs.Hops(app)
@@ -19,12 +21,12 @@ hops: hs.HopsFlask = hs.Hops(app)
 
 
 @hops.component(
-    "/plot3",
-    inputs=[hs.HopsNumber("A"), hs.HopsNumber("B")],
-    outputs=[hs.HopsNumber("Multiply")],
+    "/plot8",
+    inputs=[hs.HopsNumber("A")],
+    outputs=[hs.HopsString("Multiply")],
 )
-def BinaryMultiply(a: float, b: float):
-    return graph_visualization()
+def BinaryMultiply(a: float):
+    return create_figure()
 
 
 @hops.component(
@@ -47,6 +49,16 @@ def wind(city):
     wind = soup.select('#wob_ws')[0].getText().strip()
     return wind
 
+def create_figure():
+    fig, ax = plt.subplots()  # Create a figure containing a single axes.
+    ax.plot([1, 2, 3, 4], [1, 4, 2, 3]);  # Plot some data on the axes.
+    my_stringIObytes = io.BytesIO() #https://stackoverflow.com/a/38061400/7866788
+    plt.savefig(my_stringIObytes, format='jpg')
+    my_stringIObytes.seek(0)
+    my_base64_jpgData = base64.b64encode(my_stringIObytes.read())
+    return str(my_base64_jpgData)
+
+
 
 # def graph_visualization():
 #     fig = create_figure()
@@ -66,13 +78,7 @@ def wind(city):
 # #     return send_file(output, mimetype='image/png', as_attachment=True)
 # #     return Response(output.getvalue(), mimetype='image/png')
 
-# def create_figure():
-#     fig = Figure()
-#     axis = fig.add_subplot(1, 1, 1)
-#     xs = range(100)
-#     ys = [random.randint(1, 50) for x in xs]
-#     axis.plot(xs, ys)
-#     return fig
+
 
 # # @app.route('/plot.png')
 # # def plot_png():
@@ -98,8 +104,6 @@ def wind(city):
 # #     fig.savefig('test.png')
 
 # #     return fig
-
-
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
