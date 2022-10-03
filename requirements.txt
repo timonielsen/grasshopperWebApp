@@ -5,3 +5,4 @@ requests
 ghhops_server
 matplotlib
 pandas
+seaborn

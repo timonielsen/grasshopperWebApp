@@ -12,8 +12,9 @@ from flask import Response
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
-import time
 import base64
+import seaborn as sns
+import numpy as np
 
 app = Flask(__name__)
 hops: hs.HopsFlask = hs.Hops(app)
@@ -21,12 +22,17 @@ hops: hs.HopsFlask = hs.Hops(app)
 
 
 @hops.component(
-    "/plot8",
-    inputs=[hs.HopsNumber("A")],
-    outputs=[hs.HopsString("Multiply")],
+    "/plot19",
+    inputs=[
+    hs.HopsNumber("X", "X", "description", hs.HopsParamAccess.LIST),
+    hs.HopsNumber("Y", "Y", "description", hs.HopsParamAccess.LIST),
+    hs.HopsNumber("c", "c", "description", hs.HopsParamAccess.LIST),
+    hs.HopsNumber("s", "s", "description", hs.HopsParamAccess.LIST)
+    ],
+    outputs=[hs.HopsString("base64img")],
 )
-def BinaryMultiply(a: float):
-    return create_figure()
+def BinaryMultiply(x,y,c,s):
+    return create_figure(x,y,c,s)
 
 
 @hops.component(
@@ -49,7 +55,25 @@ def wind(city):
     wind = soup.select('#wob_ws')[0].getText().strip()
     return wind
 
-def create_figure():
+def create_figure(x,y,c,s):
+    # Change color with c and transparency with alpha. 
+    # I map the color to the X axis value.
+    plt.scatter(x, y, s=s, c=c, cmap="Blues", alpha=0.4, edgecolors="grey", linewidth=2)
+     
+    # Add titles (main and on axis)
+    plt.xlabel("the X axis")
+    plt.ylabel("the Y axis")
+    plt.title("A colored bubble plot")
+
+    # Show the graph
+    my_stringIObytes = io.BytesIO() #https://stackoverflow.com/a/38061400/7866788
+    plt.savefig(my_stringIObytes, format='jpg', dpi=300)
+    my_stringIObytes.seek(0)
+    my_base64_jpgData = base64.b64encode(my_stringIObytes.read())
+    plt.close()
+    return str(my_base64_jpgData)
+    """
+
     fig, ax = plt.subplots()  # Create a figure containing a single axes.
     ax.plot([1, 2, 3, 4], [1, 4, 2, 3]);  # Plot some data on the axes.
     my_stringIObytes = io.BytesIO() #https://stackoverflow.com/a/38061400/7866788
@@ -57,7 +81,7 @@ def create_figure():
     my_stringIObytes.seek(0)
     my_base64_jpgData = base64.b64encode(my_stringIObytes.read())
     return str(my_base64_jpgData)
-
+    """
 
 
 # def graph_visualization():
