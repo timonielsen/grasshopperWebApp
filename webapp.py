@@ -22,7 +22,7 @@ hops: hs.HopsFlask = hs.Hops(app)
 
 
 @hops.component(
-    "/plot19",
+    "/plot20",
     inputs=[
     hs.HopsNumber("X", "X", "description", hs.HopsParamAccess.LIST),
     hs.HopsNumber("Y", "Y", "description", hs.HopsParamAccess.LIST),
@@ -42,7 +42,6 @@ def BinaryMultiply(x,y,c,s):
 )
 def getWindSpeed(city):
     return wind(city)
-
 
 
 def wind(city):
