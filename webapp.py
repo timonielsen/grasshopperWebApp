@@ -58,12 +58,13 @@ def wind(city):
 def create_figure(x,y,c,s):
     # Change color with c and transparency with alpha. 
     # I map the color to the X axis value.
-    plt.scatter(x, y, s=s, c=c, cmap="Blues", alpha=0.4, edgecolors="grey", linewidth=2)
+    plt.scatter(x, y, s=s, c=c, cmap="turbo")
      
     # Add titles (main and on axis)
     plt.xlabel("the X axis")
     plt.ylabel("the Y axis")
     plt.title("A colored bubble plot")
+    plt.axis('equal')
 
     # Show the graph
     my_stringIObytes = io.BytesIO() #https://stackoverflow.com/a/38061400/7866788
@@ -72,63 +73,7 @@ def create_figure(x,y,c,s):
     my_base64_jpgData = base64.b64encode(my_stringIObytes.read())
     plt.close()
     return str(my_base64_jpgData)
-    """
-
-    fig, ax = plt.subplots()  # Create a figure containing a single axes.
-    ax.plot([1, 2, 3, 4], [1, 4, 2, 3]);  # Plot some data on the axes.
-    my_stringIObytes = io.BytesIO() #https://stackoverflow.com/a/38061400/7866788
-    plt.savefig(my_stringIObytes, format='jpg')
-    my_stringIObytes.seek(0)
-    my_base64_jpgData = base64.b64encode(my_stringIObytes.read())
-    return str(my_base64_jpgData)
-    """
-
-
-# def graph_visualization():
-#     fig = create_figure()
-#     canvas = FigureCanvas(fig)
-#     img = io.BytesIO()
-#     fig.savefig(img, format='png')
-#     img.seek(0)
-#     return send_file(img, mimetype='image/png',as_attachment=True,download_name="file.png")
-
-
-# # @app.route('/plot.png')
-# # def plot_png():
-# #     fig = create_figure()
-# #     output = io.BytesIO()
-# #     #FigureCanvas(fig).print_png(output)
-# #     plt.savefig(output, format='png')
-# #     return send_file(output, mimetype='image/png', as_attachment=True)
-# #     return Response(output.getvalue(), mimetype='image/png')
-
-
-
-# # @app.route('/plot.png')
-# # def plot_png():
-# #     fig = create_figure()
-# #     #fig.savefig('/some_unique_string2.pdf')
-# #     print(hello)
-# #     img = io.BytesIO()
-# #     plt.savefig(img)
-# #     img.seek(0)
-# #     #return send_file(img, mimetype='image/png')
-# #     send_from_directory('/', 'some_unique_string.png')
-# #     #output = io.BytesIO()
-# #     #FigureCanvas(fig).print_png(output)
-# #     #return send_file()
-# #     #return Response(output.getvalue(), mimetype='image/png')
-
-# # def create_figure():
-# #     fig = Figure()
-# #     axis = fig.add_subplot(1, 1, 1)
-# #     xs = range(100)
-# #     ys = [random.randint(1, 50) for x in xs]
-# #     axis.plot(xs, ys)
-# #     fig.savefig('test.png')
-
-# #     return fig
-
+   
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
 
