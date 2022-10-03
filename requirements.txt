@@ -4,3 +4,4 @@ bs4
 requests
 ghhops_server
 matplotlib
+pandas
